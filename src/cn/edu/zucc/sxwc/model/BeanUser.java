@@ -75,4 +75,5 @@ public class BeanUser {//用户信息
 		this.vipenddate = vipenddate;
 	}
 	
+	
 }
