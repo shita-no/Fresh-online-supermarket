@@ -1,39 +1,33 @@
 package cn.edu.zucc.sxwc.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Desktop.Action;
-import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JFrame;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 import cn.edu.zucc.sxwc.comtrol.example.ExampleEmployeeManager;
 import cn.edu.zucc.sxwc.comtrol.example.ExampleUserManager;
 import cn.edu.zucc.sxwc.model.BeanManager;
 import cn.edu.zucc.sxwc.model.BeanUser;
 import cn.edu.zucc.sxwc.util.BaseException;
-import cn.edu.zucc.sxwc.util.BusinessException;
-import javassist.expr.NewArray;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
+public class FrmLogin1 extends JDialog implements ActionListener{
 
-public class FrmLogin extends JFrame implements ActionListener {
-
-	private JPanel contentPane;
+	private final JPanel contentPanel = new JPanel();
 	private JTextField edtUserId = new JTextField(20);
 	private JPasswordField edtPwd = new JPasswordField(20);
 	private JButton btnNewButton;
@@ -42,75 +36,70 @@ public class FrmLogin extends JFrame implements ActionListener {
 	private JRadioButton rdbtnNewRadioButton;
 	private JRadioButton rdbtnNewRadioButton_1;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FrmLogin frame = new FrmLogin();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	/*public static void main(String[] args) {
+		try {
+			FrmLogin1 dialog = new FrmLogin1();
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}*/
 
 	/**
-	 * Create the frame.
+	 * Create the dialog.
 	 */
-	public FrmLogin() {
-		super();
-		setTitle("\u767B\u5F55");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 462, 326);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+	public FrmLogin1(Frame f, String s, boolean b) {
+		super(f, s, b);
+		setBounds(100, 100, 450, 300);
+		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setLayout(new FlowLayout());
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPanel);
+		contentPanel.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("ÃÜÂë£º");
 		lblNewLabel_1.setBounds(34, 106, 72, 18);
-		contentPane.add(lblNewLabel_1);
+		contentPanel.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("ÕËºÅ£º");
 		lblNewLabel_2.setBounds(34, 32, 72, 18);
-		contentPane.add(lblNewLabel_2);
+		contentPanel.add(lblNewLabel_2);
 		
 		btnNewButton = new JButton("×¢²á");
 		btnNewButton.setBounds(14, 190, 113, 27);
-		contentPane.add(btnNewButton);
+		contentPanel.add(btnNewButton);
 		
 		btnNewButton_1 = new JButton("µÇÂ¼");
 		btnNewButton_1.setBounds(160, 190, 113, 27);
-		contentPane.add(btnNewButton_1);
+		contentPanel.add(btnNewButton_1);
 		
 		
 		edtUserId.setBounds(160, 29, 86, 24);
-		contentPane.add(edtUserId);
+		contentPanel.add(edtUserId);
 		edtUserId.setColumns(10);
 		
 		
 		edtPwd.setBounds(160, 103, 86, 24);
-		contentPane.add(edtPwd);
+		contentPanel.add(edtPwd);
 		edtPwd.setColumns(10);
 		
 		btnNewButton_2 = new JButton("ÍË³ö");
 		btnNewButton_2.setBounds(304, 190, 113, 27);
-		contentPane.add(btnNewButton_2);
+		contentPanel.add(btnNewButton_2);
 		
 		rdbtnNewRadioButton = new JRadioButton("ÓÃ»§");
 		buttonGroup.add(rdbtnNewRadioButton);
 		rdbtnNewRadioButton.setBounds(75, 154, 132, 27);
-		contentPane.add(rdbtnNewRadioButton);
+		contentPanel.add(rdbtnNewRadioButton);
 		
 		rdbtnNewRadioButton_1 = new JRadioButton("¹ÜÀíÔ±");
 		buttonGroup.add(rdbtnNewRadioButton_1);
 		rdbtnNewRadioButton_1.setBounds(268, 154, 132, 27);
-		contentPane.add(rdbtnNewRadioButton_1);
+		contentPanel.add(rdbtnNewRadioButton_1);
 		
 		btnNewButton_1.addActionListener(this);
 		btnNewButton_2.addActionListener(this);
@@ -121,9 +110,11 @@ public class FrmLogin extends JFrame implements ActionListener {
 				System.exit(0);
 			}
 		});
-		
 	}
+
+	@Override
 	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 		if (e.getSource() ==this.btnNewButton_1) {
 			if(this.rdbtnNewRadioButton.isSelected()) {
 			String userid=this.edtUserId.getText();
@@ -135,9 +126,9 @@ public class FrmLogin extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			//FrmRegister fFrmRegister = new FrmRegister();
-			//fFrmRegister.setVisible(true);
 			this.setVisible(false);
+			FrmUserMain FUM = new FrmUserMain();
+			FUM.setVisible(true);
 			}
 			else if(this.rdbtnNewRadioButton_1.isSelected()){
 				String employeeid=this.edtUserId.getText();
@@ -149,7 +140,10 @@ public class FrmLogin extends JFrame implements ActionListener {
 					JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				
 				this.setVisible(false);
+				FrmManagerMain FMM = new FrmManagerMain();
+				FMM.setVisible(true);
 			}
 			else {
 				JOptionPane.showMessageDialog(null,"ÇëÏÈÑ¡ÔñµÇÂ¼Éí·Ý");
@@ -168,3 +162,5 @@ public class FrmLogin extends JFrame implements ActionListener {
 		}
 	}
 }
+
+

@@ -1,7 +1,7 @@
 package cn.edu.zucc.sxwc;
 
 
-import cn.edu.zucc.sxwc.ui.FrmManagerMain;
+import cn.edu.zucc.sxwc.ui.FrmMain;
 
 public class SXWC {
 	/**
@@ -9,6 +9,6 @@ public class SXWC {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new FrmManagerMain();
+		new FrmMain();
 	}
 }

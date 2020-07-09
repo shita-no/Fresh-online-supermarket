@@ -32,7 +32,10 @@ public class FrmMain extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
+	private FrmLogin1 dlgLogin=null;
 	public FrmMain() {
+		dlgLogin=new FrmLogin1(this,"µÇÂ¼",true);
+		dlgLogin.setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 597, 406);
 		contentPane = new JPanel();

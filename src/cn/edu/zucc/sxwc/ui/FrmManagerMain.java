@@ -2,6 +2,7 @@ package cn.edu.zucc.sxwc.ui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,16 +23,17 @@ import javax.swing.JMenuItem;
 
 public class FrmManagerMain extends JFrame implements ActionListener{
 
-	private JPanel contentPane;
+	private JPanel contentPane =new JPanel();
 	private JMenu mnNewMenu = new JMenu("系统管理");
 	private JMenuItem mntmNewMenuItem = new JMenuItem("管理员信息管理");
 	private JMenuItem mntmNewMenuItem_1 = new JMenuItem("商品采购管理");
-	private JMenuItem mntmNewMenuItem_2 = new JMenuItem("基础数据优惠数据");
+	private JMenuItem mntmNewMenuItem_2 = new JMenuItem("用户管理");
+	private final JMenu menu = new JMenu("\u4F18\u60E0\u5238\u7BA1\u7406");
 	/**
 	 * Launch the application.
 	 */
 	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -42,23 +44,21 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 				}
 			}
 		});
-	}*/
+	}
 
 	/**
 	 * Create the frame.
 	 */
-	private FrmLogin dlgLogin=null;
+	
 	public FrmManagerMain() {
 		
 		this.setExtendedState(Frame.MAXIMIZED_BOTH);
 		this.setTitle("管理员管理系统");
-		dlgLogin=new FrmLogin();
-		dlgLogin.setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		
 		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
+		
 		
 		JMenu mnNewMenu = new JMenu("系统管理");
 		menuBar.add(mnNewMenu);
@@ -72,13 +72,15 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 		mnNewMenu.add(mntmNewMenuItem_2);
 		mntmNewMenuItem_2.addActionListener(this);
 		
-		contentPane = new JPanel();
+		this.setJMenuBar(menuBar);
+		
+		menuBar.add(menu);
+		
+		
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(null);
-		JLabel label=new JLabel("您好!"+ExampleEmployeeManager.currentLoginManager.getEmployeename());
-		label.setBounds(0, 117, 110, 111);
-		contentPane.add(label);
+		
 		setContentPane(contentPane);
+		
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
@@ -91,7 +93,7 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()==this.mntmNewMenuItem){
-			FrmManager dlg=new FrmManager();//FrmUserManager dlg=new FrmUserManager(this,"用户管理",true);
+			FrmManager dlg=new FrmManager(this,"管理员信息管理",true);//FrmUserManager dlg=new FrmUserManager(this,"用户管理",true);
 			dlg.setVisible(true);
 		}
 		else if(e.getSource()==mntmNewMenuItem_1){
