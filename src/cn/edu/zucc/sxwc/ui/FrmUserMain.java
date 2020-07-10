@@ -75,10 +75,11 @@ public class FrmUserMain extends JFrame implements ActionListener{
 	DefaultTableModel tabMenuModel=new DefaultTableModel();
 	private JTable menutable=new JTable(tabMenuModel);
 	
+	
 	List<BeanLb> alllb=null;
 	private BeanLb curlb=null;
 	List<BeanGoods> lbgoods=null;
-	private BeanGoods curgoods=null;
+	public  BeanGoods curgoods=null;
 	List<BeanMenu> goodsmenu=null;
 	private final JButton btnNewButton = new JButton("加入购物车");
 	private void reloadLbTable(){
@@ -136,25 +137,7 @@ public class FrmUserMain extends JFrame implements ActionListener{
 		this.menutable.validate();
 		this.menutable.repaint();
 	}
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FrmUserMain frame = new FrmUserMain();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
-	/**
-	 * Create the frame.
-	 */
+	
 	public FrmUserMain() {
 		this.setExtendedState(Frame.MAXIMIZED_BOTH);
 		this.setTitle("生鲜类别信息");
@@ -187,7 +170,6 @@ public class FrmUserMain extends JFrame implements ActionListener{
 					return;
 				}
 				FrmUserMain.this.reloadGoodsMenuTabel(i);
-				
 			}
 			
 	    });
@@ -227,6 +209,7 @@ public class FrmUserMain extends JFrame implements ActionListener{
 		mntmNewMenuItem.addActionListener(this);
 		mnNewMenu.add(mntmNewMenuItem_3);
 		mntmNewMenuItem_3.addActionListener(this);
+		mntmNewMenuItem_4.addActionListener(this);
 		menuBar.add(mnNewMenu_1);
 		
 		mnNewMenu_1.add(mntmNewMenuItem_4);
@@ -256,13 +239,17 @@ public class FrmUserMain extends JFrame implements ActionListener{
 			
 		}
 		else if(e.getSource()==mntmNewMenuItem_2){
-			FrmPurchase dlg = new FrmPurchase();//FrmReaderTypeManager dlg=new FrmReaderTypeManager(this,"读者类别管理",true);
+			FrmAddress dlg = new FrmAddress(this,"配送地址",true);
 			dlg.setVisible(true);
 		}
 		else if(e.getSource()==mntmNewMenuItem_3) {
-			//int i=this.goodtable.getSelectedRow();
+			int i=this.goodtable.getSelectedRow();
 			//BeanGoods goods=this.lbgoods.get(i);
 			FrmShoppingCart dlg =new FrmShoppingCart(this, "购物车", true);
+			dlg.setVisible(true);
+		}
+		else if(e.getSource()==mntmNewMenuItem_4) {
+			Frmcoupon dlg=new Frmcoupon(this,"优惠券",true);
 			dlg.setVisible(true);
 		}
 		else if(e.getSource()==btnNewButton) {
@@ -271,32 +258,27 @@ public class FrmUserMain extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null,  "请选择商品","提示",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			try {
-				Frmiscart isc = new Frmiscart(this,"选择购买数量",true);
-				isc.setVisible(true);
-				
-					int amount = isc.loadNum();
-					ShoppingCart cart=new ShoppingCart();
-					cart.addcart(this.curgoods, amount);
-				
-			} catch (BaseException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+			Frmiscart dlg=new Frmiscart(this,"购物车",true);
+			dlg.setVisible(true);
+			int amount=dlg.loadNum();
+			if(amount==0) {
+				JOptionPane.showMessageDialog(null,  "购买数量不能为0，请重新加入购物车","提示",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			//BeanGoods goods=this.loadcurGoods();
+			ShoppingCart buygood=new ShoppingCart();
+			try {
+				BeanShoppingCart buy=buygood.addcart(this.curgoods,amount);
+			} catch (BaseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null,  "购买数量大于库存，请重新加入购物车","提示",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			
-			Frmiscart dlg=new Frmiscart(this,"购买数量",true);
-			dlg.setVisible(true);
 			//if(dlg.get()!=null){//刷新表格
 				//this.reloadTable();
 			//}
 			//this.reloadLbGoodsTabel();
 		}
-	}
-	public BeanGoods loadcurGoods() {
-		BeanGoods goods = new BeanGoods();
-		goods = this.curgoods;
-		System.out.println(curgoods.getGoodsid());
-		return goods;
 	}
 }

@@ -7,7 +7,7 @@ public class BeanShoppingCart {
 	private Float price;//价格
 	private int amount;//数量
 	private String userid;
-	public static final String[] CartTitles={"商品编号","类别编号","商品名称","结算价格","数量"};
+	public static final String[] CartTitles={"商品编号","类别编号","商品名称"," 单价","数量"};
 	public String getCell(int col){
 		if(col==0) return String.valueOf(goodsid);
 		else if(col==1) return String.valueOf(lbid);

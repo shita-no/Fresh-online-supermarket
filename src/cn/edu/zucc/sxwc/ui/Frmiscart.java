@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import cn.edu.zucc.sxwc.comtrol.example.ShoppingCart;
+import cn.edu.zucc.sxwc.model.BeanGoods;
 import cn.edu.zucc.sxwc.model.BeanShoppingCart;
 import cn.edu.zucc.sxwc.model.BeanUser;
 import cn.edu.zucc.sxwc.util.BaseException;
@@ -89,6 +90,15 @@ public class Frmiscart extends JDialog implements ActionListener{
 				return;
 			}
 			this.setVisible(false);
+			//int amount=Integer.valueOf(this.textField.getText());
+			//try {
+				//ShoppingCart buygood=new ShoppingCart();
+				//BeanShoppingCart buy=buygood.addcart(BeanGoods.curGoods,amount);
+				//this.setVisible(false);
+			//}catch(BaseException e1) {
+				//JOptionPane.showMessageDialog(null, e1.getMessage(),"´íÎó",JOptionPane.ERROR_MESSAGE);
+				//return;
+			//}
 			/*String amount=this.textField.getText();
 			ShoppingCart buygood=new ShoppingCart();
 			try{

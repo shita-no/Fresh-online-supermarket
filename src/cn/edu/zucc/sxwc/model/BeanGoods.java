@@ -3,6 +3,9 @@ package cn.edu.zucc.sxwc.model;
 import java.sql.Date;
 
 public class BeanGoods {//商品信息
+	//public static BeanGoods curGoods=null;
+		
+	
 	public static final String[] GoodsTitles={"商品编号","类别编号","商品名称","商品价格","会员价","数量","规格","详情"};
 	private String goodsid;//商品编号
 	private String lbid;//类别编号
