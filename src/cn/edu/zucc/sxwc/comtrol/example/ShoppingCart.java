@@ -340,8 +340,16 @@ public class ShoppingCart {
 			pst = conn.prepareStatement(sql);
 			pst.execute();
 			pst.close();*/
-		
-			
+			sql="select goodsid,lbid,amount from shoppingcart where userid=?";
+			pst=conn.prepareStatement(sql);
+			pst.setString(1, BeanUser.currentLoginUser.getUserid());
+			rs=pst.executeQuery();
+			where(rs.next()){
+				
+			}
+			sql="update goods set gamount=gamount-? where lbid=? and goodsid=? ";
+			pst=conn.prepareStatement(sql);
+			//pst.setString(1, x);
 			
 			sql = "delete from shoppingcart where userid = ?";
 			pst = conn.prepareStatement(sql);
