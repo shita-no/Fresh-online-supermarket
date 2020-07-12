@@ -344,9 +344,9 @@ public class ShoppingCart {
 			pst=conn.prepareStatement(sql);
 			pst.setString(1, BeanUser.currentLoginUser.getUserid());
 			rs=pst.executeQuery();
-			where(rs.next()){
+			//where(rs.next()){
 				
-			}
+			//}
 			sql="update goods set gamount=gamount-? where lbid=? and goodsid=? ";
 			pst=conn.prepareStatement(sql);
 			//pst.setString(1, x);
