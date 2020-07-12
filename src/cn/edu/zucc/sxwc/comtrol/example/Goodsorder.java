@@ -6,33 +6,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.zucc.sxwc.model.BeanCoupon;
-import cn.edu.zucc.sxwc.model.BeanDiscount;
+import cn.edu.zucc.sxwc.model.BeanGoodsorder;
 import cn.edu.zucc.sxwc.model.BeanUser;
 import cn.edu.zucc.sxwc.util.BaseException;
 import cn.edu.zucc.sxwc.util.DBUtil;
 import cn.edu.zucc.sxwc.util.DbException;
 
-public class Discount {
-	public List<BeanDiscount> loadDc() throws BaseException{
+public class Goodsorder {
+
+	public List<BeanGoodsorder> loadGorder() throws BaseException{
 		// TODO Auto-generated method stub
-		List<BeanDiscount> result=new ArrayList<BeanDiscount>();
+		List<BeanGoodsorder> result=new ArrayList<BeanGoodsorder>();
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select discountid,lbid,goodsid,syamount,discount,dccontent,bedate,enddate from discountform order by discountid";
+			String sql="select orderid,addid,couponid,beprice,endprice,arrivetime,state from goodsorder where userid =? order by orderid";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			//pst.setString(1,BeanUser.currentLoginUser.getUserid());
+			pst.setString(1,BeanUser.currentLoginUser.getUserid());
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()){
-				BeanDiscount u=new BeanDiscount();
-				u.setDiscountid(rs.getString(1));
-				u.setLbid(rs.getString(2));
-				u.setGoodsid(rs.getString(3));
-				u.setSyamount(rs.getInt(4));
-				u.setDiscount(rs.getFloat(5));
-				u.setDccontent(rs.getString(6));
-				u.setBedate(rs.getDate(7));
-				u.setEnddate(rs.getDate(8));
+				BeanGoodsorder u=new BeanGoodsorder();
+				u.setOrderid(rs.getInt(1));
+				u.setAddid(rs.getString(2));
+				u.setCouponid(rs.getString(3));
+				u.setBeprice(rs.getFloat(4));
+				u.setEndprice(rs.getFloat(5));
+				u.setArrivetime(rs.getDate(6));
+				u.setState(rs.getString(7));
 				result.add(u);
 			}
 		} catch (SQLException e) {
@@ -50,4 +50,5 @@ public class Discount {
 		}
 		return result;
 	}
+
 }

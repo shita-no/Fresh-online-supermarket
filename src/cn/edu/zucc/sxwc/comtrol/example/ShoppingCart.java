@@ -3,11 +3,15 @@ package cn.edu.zucc.sxwc.comtrol.example;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+
+import org.hibernate.annotations.Where;
+import org.omg.CORBA.PRIVATE_MEMBER;
 
 import cn.edu.zucc.sxwc.model.BeanCoupon;
 import cn.edu.zucc.sxwc.model.BeanDiscount;
@@ -23,17 +27,10 @@ public class ShoppingCart {
 	public List<BeanShoppingCart> loadCart()throws BaseException{//购物车
 		List<BeanShoppingCart> result=new ArrayList<BeanShoppingCart>();
 		Connection conn=null;
-		//Connection conn1=null;
+		
 		try {
 			conn=DBUtil.getConnection();
-			//conn1=DBUtil.getConnection();
-			/*String sql1="select amount from shoppingcart where userid=? and goodsid =? and lbid=?";
-			java.sql.PreparedStatement pst1=conn.prepareStatement(sql1);
-			pst1.setString(1,BeanUser.currentLoginUser.getUserid());
-			java.sql.ResultSet rs1=pst1.executeQuery();
-			while(rs1.next()) {
-				
-			}*/
+			
 			String sql="select a.goodsid,a.lbid,a.goodsname,a.price,a.amount,a.sumprice,b.discount,b.syamount "
 					+ "from shoppingcart a,discountform b "
 					+ "where a.userid =? and a.goodsid=b.goodsid and a.lbid=b.lbid order by a.lbid,a.goodsid";
@@ -332,24 +329,56 @@ public class ShoppingCart {
 			pst.setString(8, "下单");
 			pst.execute();
 			pst.close();
-			//将购物车商品按订单号加入订单详情 
-			/*sql = "insert into goodsorder(orderid,addid,couponid,userid,beprice,endprice,arrivetime,state) "
-					+ "select user_order.order_id,goods_name,num,goods_price "
-					+ "from user_shoppingCar,user_order "
-					+ "where user_shoppingCar.merchant_name = user_order.merchant_name and user_order.user_name = user_shoppingCar.user_name order by user_order.order_id";
-			pst = conn.prepareStatement(sql);
-			pst.execute();
-			pst.close();*/
+			
+			sql="select goodsid,lbid,amount,price from shoppingcart where userid=? ";
+			pst=conn.prepareStatement(sql);
+			pst.setString(1, BeanUser.currentLoginUser.getUserid());
+			rs=pst.executeQuery();
+			while(rs.next()) {
+				String sql1="insert into orderxq(orderid,lbid,goodsid,discountid,amount,price,discount)value(?,?,?,?,?,?,?)";
+				java.sql.PreparedStatement pst1=conn.prepareStatement(sql1);
+				
+				pst1.setInt(1, orderid);
+				pst1.setString(2, rs.getString(2));
+				pst1.setString(3, rs.getString(1));
+				String sql2="select discountid,discount from discountform where goodsid=? and lbid=? and syamount<=?";
+				java.sql.PreparedStatement pst2=conn.prepareStatement(sql2);
+				pst2.setString(1, rs.getString(1));
+				pst2.setString(2, rs.getString(2));
+				pst2.setInt(3, rs.getInt(3));
+				ResultSet rs2=pst2.executeQuery();
+				if(rs2.next()) {
+					pst1.setString(4, rs2.getString(1));
+					pst1.setFloat(7, rs2.getFloat(2));
+					pst1.setFloat(6, (float)(rs.getInt(3)*rs.getFloat(4)*rs2.getFloat(2)*0.1));
+				}
+				else {
+					pst1.setString(4, "");
+					pst1.setFloat(7, (float) 10.0);
+					pst1.setFloat(6, rs.getInt(3)*rs.getFloat(4));
+				}
+				
+				pst1.setInt(5, rs.getInt(3));
+				
+				pst1.execute();
+				pst1.close();
+			}
+			
+			
 			sql="select goodsid,lbid,amount from shoppingcart where userid=?";
 			pst=conn.prepareStatement(sql);
 			pst.setString(1, BeanUser.currentLoginUser.getUserid());
 			rs=pst.executeQuery();
-			//where(rs.next()){
-				
-			//}
-			sql="update goods set gamount=gamount-? where lbid=? and goodsid=? ";
-			pst=conn.prepareStatement(sql);
-			//pst.setString(1, x);
+			while(rs.next()){
+				String sql1="update goods set gamount=gamount-? where lbid=? and goodsid=? ";
+				java.sql.PreparedStatement pst1=conn.prepareStatement(sql1);
+				pst1.setFloat(1, rs.getFloat(3));
+				pst1.setString(2, rs.getString(2));
+				pst1.setString(3, rs.getString(1));
+				pst1.execute();
+				pst1.close();
+			}
+			
 			
 			sql = "delete from shoppingcart where userid = ?";
 			pst = conn.prepareStatement(sql);

@@ -184,22 +184,7 @@ public class FrmUserMain extends JFrame implements ActionListener{
 	    
 	    contentPane.add(btnNewButton);
 	    this.btnNewButton.addActionListener(this);
-	    /*btnNewButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				int index=goodtable.getSelectedRow();
-				if(index==-1) {
-					JOptionPane.showMessageDialog(null,"请选择一行商品进行购买");
-				}
-				FrmUserMain.this.dispose();
-				BeanShoppingCart cart=tblMenuData[].get(index);
-			}
-		});*/
-	    
-	    
-		menuBar.add(mnNewMenu);
+	    menuBar.add(mnNewMenu);
 		
 		mnNewMenu.add(mntmNewMenuItem_1);
 		mntmNewMenuItem_1.addActionListener(this);
@@ -282,6 +267,10 @@ public class FrmUserMain extends JFrame implements ActionListener{
 				//this.reloadTable();
 			//}
 			//this.reloadLbGoodsTabel();
+		}
+		else if(e.getSource()==mntmNewMenuItem) {
+			Frmorder dlg=new Frmorder(this,"商品订单",true);
+			dlg.setVisible(true);
 		}
 	}
 }
