@@ -25,9 +25,9 @@ import javax.swing.JPasswordField;
 public class FrmManager_AddManager extends JDialog implements ActionListener{
 	private BeanManager employee=null;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField edtUserid=new JTextField(20);;
-	private JTextField edtUsername=new JTextField(20);;
-	private JPasswordField edtPwd=new JPasswordField(20);
+	private JTextField edtUserid=new JTextField(50);
+	private JTextField edtUsername=new JTextField(50);
+	private JPasswordField edtPwd=new JPasswordField(50);
 	private JButton okButton = new JButton("确定");
 	private JButton cancelButton = new JButton("取消");
 	private JPanel buttonPane = new JPanel();

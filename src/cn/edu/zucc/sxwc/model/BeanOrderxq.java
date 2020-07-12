@@ -1,16 +1,16 @@
 package cn.edu.zucc.sxwc.model;
 
 public class BeanOrderxq {//订单详情表
-	private String orderid;//订单编号
+	private int orderid;//订单编号
 	private String goodsid;//商品编号
 	private String discountid;//满折编号
 	private int amount;//数量
 	private Float price;//价格
 	private String discount;//折扣
-	public String getOrderid() {
+	public int getOrderid() {
 		return orderid;
 	}
-	public void setOrderid(String orderid) {
+	public void setOrderid(int orderid) {
 		this.orderid = orderid;
 	}
 	public String getGoodsid() {

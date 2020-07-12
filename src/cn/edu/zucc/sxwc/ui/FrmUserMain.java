@@ -209,13 +209,13 @@ public class FrmUserMain extends JFrame implements ActionListener{
 		mntmNewMenuItem.addActionListener(this);
 		mnNewMenu.add(mntmNewMenuItem_3);
 		mntmNewMenuItem_3.addActionListener(this);
-		mntmNewMenuItem_4.addActionListener(this);
+		
 		menuBar.add(mnNewMenu_1);
 		
 		mnNewMenu_1.add(mntmNewMenuItem_4);
-		
+		mntmNewMenuItem_4.addActionListener(this);
 		mnNewMenu_1.add(mntmNewMenuItem_5);
-		
+		mntmNewMenuItem_5.addActionListener(this);
 		menuBar.add(mnNewMenu_2);
 		
 		mnNewMenu_2.add(mntmNewMenuItem_6);
@@ -236,7 +236,6 @@ public class FrmUserMain extends JFrame implements ActionListener{
 		if(e.getSource()==this.mntmNewMenuItem_1){
 			FrmUser dlg=new FrmUser(this,"用户信息",true);
 			dlg.setVisible(true);
-			
 		}
 		else if(e.getSource()==mntmNewMenuItem_2){
 			FrmAddress dlg = new FrmAddress(this,"配送地址",true);
@@ -250,6 +249,10 @@ public class FrmUserMain extends JFrame implements ActionListener{
 		}
 		else if(e.getSource()==mntmNewMenuItem_4) {
 			Frmcoupon dlg=new Frmcoupon(this,"优惠券",true);
+			dlg.setVisible(true);
+		}
+		else if(e.getSource()==mntmNewMenuItem_5) {
+			Frmdiscount dlg=new Frmdiscount(this,"满折信息",true);
 			dlg.setVisible(true);
 		}
 		else if(e.getSource()==btnNewButton) {

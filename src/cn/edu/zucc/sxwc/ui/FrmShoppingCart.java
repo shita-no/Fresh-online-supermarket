@@ -43,7 +43,7 @@ public class FrmShoppingCart extends JDialog implements ActionListener{
 	List<BeanShoppingCart> allcart=null;
 	private List<BeanGoods> goods;
 	private BeanShoppingCart cart1=null;
-	private JLabel lblNewLabel_1= new JLabel(String.valueOf(this.totalprice()));
+	private JLabel lblNewLabel_1= new JLabel(String.valueOf(this.toprice()));
 	private JLabel lblNewLabel;
 
 	private void reloadCartTable(){
@@ -65,18 +65,38 @@ public class FrmShoppingCart extends JDialog implements ActionListener{
 			this.carttable.validate();
 			this.carttable.repaint();
 	}
-	public float totalprice() {
+	public float toprice() {
+		float sum = 0;
+		try {
+			ShoppingCart cart=new ShoppingCart();
+			allcart=cart.loadCart();
+		} catch (BaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
+			
+		}
+		tblcartData =  new Object[allcart.size()][BeanShoppingCart.CartTitles.length];
+		for(int i=0;i<allcart.size();i++){
+			for(int j=0;j<BeanShoppingCart.CartTitles.length;j++)
+				{
+					tblcartData[i][j]=allcart.get(i).getCell(j);
+				}
+			sum+=Float.parseFloat(allcart.get(i).getCell(5));
+			}
+		
+		return sum;
+	}
+	/*public float totalprice() {
 		float sum = 0;
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
 			conn.setAutoCommit(false);
-			String sql = "select price,amount from shoppingcart where userid = ?";
+			String sql = "select sumprice from shoppingcart where userid = ?";
 			java.sql.PreparedStatement pst = conn.prepareStatement(sql);
 			pst.setString(1, BeanUser.currentLoginUser.getUserid());
 			java.sql.ResultSet rs = pst.executeQuery();
 			while(rs.next()) 
-				sum += rs.getFloat(1) * rs.getInt(2);
+				sum += rs.getFloat(1) ;
 			conn.commit();
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -90,23 +110,8 @@ public class FrmShoppingCart extends JDialog implements ActionListener{
 				}
 		}
 		return sum;
-	}
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		try {
-			FrmShoppingCart dialog = new FrmShoppingCart();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}*/
-
-	/**
-	 * Create the dialog.
-	 */
+	
 	public FrmShoppingCart(Frame f, String s, boolean b) {
 		super(f,s,b);
 		setTitle("¹ºÎï³µ");
@@ -165,7 +170,7 @@ public class FrmShoppingCart extends JDialog implements ActionListener{
 		// TODO Auto-generated method stub
 		if(e.getSource()==btnNewButton) {
 			this.setVisible(false);
-			FrmJS js = new FrmJS();
+			FrmJS js = new FrmJS(this,"½áËã",true);
 			js.setVisible(true);
 		}
 		else if(e.getSource()==btnNewButton_1) {
@@ -181,7 +186,7 @@ public class FrmShoppingCart extends JDialog implements ActionListener{
 				try {
 					(new ShoppingCart()).deletecart(userid,goodsid,lbid);
 					this.reloadCartTable();
-					lblNewLabel_1.setText(String.valueOf(this.totalprice()));
+					lblNewLabel_1.setText(String.valueOf(this.toprice()));
 					//lblNewLabel_1= new JLabel(String.valueOf(this.totalprice()));
 				} catch (BaseException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage(),"´íÎó",JOptionPane.ERROR_MESSAGE);

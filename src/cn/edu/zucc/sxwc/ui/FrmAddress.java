@@ -74,14 +74,16 @@ public class FrmAddress extends JDialog implements ActionListener{
 		btnNewButton.setBounds(14, 201, 113, 27);
 		contentPanel.add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("修改地址");
+		btnNewButton_1 = new JButton("修改地址");
 		btnNewButton_1.setBounds(180, 201, 113, 27);
 		contentPanel.add(btnNewButton_1);
 		
-		JButton btnNewButton_2 = new JButton("删除地址");
+		btnNewButton_2 = new JButton("删除地址");
 		btnNewButton_2.setBounds(358, 201, 113, 27);
 		contentPanel.add(btnNewButton_2);
-		
+		this.btnNewButton.addActionListener(this);
+		this.btnNewButton_1.addActionListener(this);
+		this.btnNewButton_2.addActionListener(this);
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {

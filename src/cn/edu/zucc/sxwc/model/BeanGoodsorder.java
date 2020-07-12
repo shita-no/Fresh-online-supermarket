@@ -3,7 +3,7 @@ package cn.edu.zucc.sxwc.model;
 import java.sql.Date;
 
 public class BeanGoodsorder {//商品订单表
-	private String orderid;//订单编号
+	private int orderid;//订单编号
 	private String addid;//配送地址编号
 	private String couponid;//优惠券编号
 	private String userid;//用户编号
@@ -11,10 +11,10 @@ public class BeanGoodsorder {//商品订单表
 	private Float endprice;//结算金额
 	private Date arrivetime;//要求送达时间
 	private String state;//订单状态（下单，配送，送达，退货）
-	public String getOrderid() {
+	public int getOrderid() {
 		return orderid;
 	}
-	public void setOrderid(String orderid) {
+	public void setOrderid(int orderid) {
 		this.orderid = orderid;
 	}
 	public String getAddid() {

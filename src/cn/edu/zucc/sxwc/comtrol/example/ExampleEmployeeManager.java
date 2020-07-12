@@ -12,7 +12,7 @@ import cn.edu.zucc.sxwc.util.DBUtil;
 import cn.edu.zucc.sxwc.util.DbException;
 
 public class ExampleEmployeeManager {
-	public static BeanManager currentLoginManager=null;
+	//public static BeanManager currentLoginManager=null;
 	public BeanManager login(String employeeid, String passwd) throws BaseException{
 		// TODO Auto-generated method stub
 		Connection conn=null;
