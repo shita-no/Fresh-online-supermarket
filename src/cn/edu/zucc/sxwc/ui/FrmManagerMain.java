@@ -46,15 +46,12 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 	private JPanel contentPane =new JPanel();
 	private JMenu mnNewMenu = new JMenu("系统信息");//用户信息
 	private JMenuItem mntmNewMenuItem_1 = new JMenuItem("管理员信息");//改密码等等
-	private JMenuItem mntmNewMenuItem_2 = new JMenuItem("配送地址");
-	private JMenuItem mntmNewMenuItem = new JMenuItem("商品订单");//商品订单应该直接包括订单表吧
-	private JMenuItem mntmNewMenuItem_3 = new JMenuItem("购物车");
+	private JMenuItem mntmNewMenuItem = new JMenuItem("商品订单处理");
 	private JMenu mnNewMenu_1 = new JMenu("优惠信息");
 	private JMenuItem mntmNewMenuItem_4 = new JMenuItem("优惠券");
 	private JMenuItem mntmNewMenuItem_5 = new JMenuItem("满折信息");
 	private final JMenu mnNewMenu_2 = new JMenu("类别管理");
 	private final JMenuItem mntmNewMenuItem_6 = new JMenuItem("添加类别");//选完一个类别后里面应该有商品信息
-	private final JMenuItem mntmNewMenuItem_7 = new JMenuItem("New menu item");
 	//private FrmLogin1 dlgLogin=null;
 	private Object tblTitle[]=BeanLb.tableTitles;
 	private Object tbllbData[][];
@@ -77,9 +74,9 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 	List<BeanGoods> lbgoods=null;
 	public  BeanGoods curgoods=null;
 	List<BeanMenu> goodsmenu=null;
-	private final JButton btnNewButton = new JButton("加入购物车");
 	private final JMenu mnNewMenu_3 = new JMenu("商品管理");
 	private final JMenuItem mntmNewMenuItem_8 = new JMenuItem("添加商品");
+	private final JMenuItem mntmNewMenuItem_9 = new JMenuItem("添加已有商品数量");
 	private void reloadLbTable(){
 		try {
 			Lb lb=new Lb();
@@ -182,9 +179,6 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 	    
 	    contentPane.add(label);
 	    this.getContentPane().add(contentPane,BorderLayout.SOUTH);
-	    
-	    contentPane.add(btnNewButton);
-	    this.btnNewButton.addActionListener(this);
 	    /*btnNewButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -204,12 +198,8 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 		
 		mnNewMenu.add(mntmNewMenuItem_1);
 		mntmNewMenuItem_1.addActionListener(this);
-		mnNewMenu.add(mntmNewMenuItem_2);
-		mntmNewMenuItem_2.addActionListener(this);
 		mnNewMenu.add(mntmNewMenuItem);//商品订单
 		mntmNewMenuItem.addActionListener(this);
-		mnNewMenu.add(mntmNewMenuItem_3);
-		mntmNewMenuItem_3.addActionListener(this);
 		
 		menuBar.add(mnNewMenu_1);
 		
@@ -220,12 +210,14 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 		menuBar.add(mnNewMenu_2);
 		
 		mnNewMenu_2.add(mntmNewMenuItem_6);
-		
-		mnNewMenu_2.add(mntmNewMenuItem_7);
-		
+		mntmNewMenuItem_6.addActionListener(this);
 		menuBar.add(mnNewMenu_3);
 		
 		mnNewMenu_3.add(mntmNewMenuItem_8);
+		
+		mnNewMenu_3.add(mntmNewMenuItem_9);
+		mntmNewMenuItem_8.addActionListener(this);
+		mntmNewMenuItem_9.addActionListener(this);
 		//setContentPane(contentPane);
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -242,16 +234,7 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 			FrmManager dlg=new FrmManager(this,"管理员信息",true);
 			dlg.setVisible(true);
 		}
-		else if(e.getSource()==mntmNewMenuItem_2){
-			FrmAddress dlg = new FrmAddress(this,"配送地址",true);
-			dlg.setVisible(true);
-		}
-		else if(e.getSource()==mntmNewMenuItem_3) {
-			int i=this.goodtable.getSelectedRow();
-			//BeanGoods goods=this.lbgoods.get(i);
-			FrmShoppingCart dlg =new FrmShoppingCart(this, "购物车", true);
-			dlg.setVisible(true);
-		}
+		
 		else if(e.getSource()==mntmNewMenuItem_4) {
 			Frmcoupon1 dlg=new Frmcoupon1(this,"优惠券",true);
 			dlg.setVisible(true);
@@ -260,28 +243,57 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 			Frmdiscount dlg=new Frmdiscount(this,"满折信息",true);
 			dlg.setVisible(true);
 		}
-		else if(e.getSource()==btnNewButton) {
-			int i=this.goodtable.getSelectedRow();
-			if(i<0) {
-				JOptionPane.showMessageDialog(null,  "请选择商品","提示",JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			Frmiscart dlg=new Frmiscart(this,"购物车",true);
+		else if(e.getSource()==mntmNewMenuItem) {
+			Frmorder1 dlg=new Frmorder1(this,"商品订单处理",true);
 			dlg.setVisible(true);
-			int amount=dlg.loadNum();
-			if(amount==0) {
-				JOptionPane.showMessageDialog(null,  "购买数量不能为0，请重新加入购物车","提示",JOptionPane.ERROR_MESSAGE);
+		}
+		else if(e.getSource()==mntmNewMenuItem_6) {
+			FrmlbAdd dlg=new FrmlbAdd(this,"添加商品类别",true);
+			dlg.setVisible(true);
+			if(dlg.getLb()!=null){//刷新表格
+				this.reloadLbTable();
+			}
+		}
+		else if(e.getSource()==mntmNewMenuItem_8) {
+			int i=this.lbtable.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null,  "请先选择商品类别","提示",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			ShoppingCart buygood=new ShoppingCart();
+			
+			FrmgoodsAdd dlg=new FrmgoodsAdd(this,"添加商品",true);
+			dlg.lbidString=tbllbData[i][0].toString();
+			dlg.setVisible(true);
+			if(dlg.getGoods()!=null){//刷新表格
+				this.reloadLbGoodsTabel(i);
+			}
+		}
+		else if(e.getSource()==mntmNewMenuItem_9) {
+			int i=this.goodtable.getSelectedRow();
+			int j=this.lbtable.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null,  "请先选择想要采购的商品","提示",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			Frmgoodsamount dlg=new Frmgoodsamount(this,"采购所选商品",true);
+			dlg.setVisible(true);
+			int amount=dlg.loadamount();
+			if(amount<=0) {
+				JOptionPane.showMessageDialog(null,  "采购数量不能为0或负数","提示",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			Goods buygood=new Goods();
 			try {
-				BeanShoppingCart buy=buygood.addcart(this.curgoods,amount);
+				buygood.add(this.curgoods,amount);
+				this.reloadLbGoodsTabel(j);
 			} catch (BaseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null,  "购买数量大于库存，请重新加入购物车","提示",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,  "购买数量大于库存","提示",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+		}
+		
 			
 			//if(dlg.get()!=null){//刷新表格
 				//this.reloadTable();
@@ -290,4 +302,4 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 		}
 	}
 
-}
+

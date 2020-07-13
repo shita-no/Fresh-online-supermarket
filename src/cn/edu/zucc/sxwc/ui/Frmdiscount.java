@@ -32,6 +32,7 @@ public class Frmdiscount extends JDialog implements ActionListener{
 	DefaultTableModel tabdcModel=new DefaultTableModel();
 	private JTable dcTable=new JTable(tabdcModel);
 	List<BeanDiscount> alldc=null;
+	private final JButton btnNewButton = new JButton("添加满折信息");
 	
 	private void reloaddcTable(){
 		try {
@@ -64,24 +65,11 @@ public class Frmdiscount extends JDialog implements ActionListener{
 		this.getContentPane().add(scrollPane);
 		this.getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
+		btnNewButton.setBounds(10, 286, 156, 27);
 		
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setBounds(14, 304, 647, 37);
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane);
-			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-		}
+		getContentPane().add(btnNewButton);
+		
+		this.btnNewButton.addActionListener(this);
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -93,7 +81,13 @@ public class Frmdiscount extends JDialog implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		if(e.getSource()==btnNewButton) {
+			FrmdcAdd dlg=new FrmdcAdd(this, "添加满折信息", true);
+			dlg.setVisible(true);
+			if(dlg.getDiscount()!=null) {
+				this.reloaddcTable();
+			}
+		}
 	}
 
 }

@@ -36,22 +36,7 @@ public class FrmLogin1 extends JDialog implements ActionListener{
 	private JRadioButton rdbtnNewRadioButton;
 	private JRadioButton rdbtnNewRadioButton_1;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		try {
-			FrmLogin1 dialog = new FrmLogin1();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
-
-	/**
-	 * Create the dialog.
-	 */
+	
 	public FrmLogin1(Frame f, String s, boolean b) {
 		super(f, s, b);
 		setBounds(100, 100, 450, 300);

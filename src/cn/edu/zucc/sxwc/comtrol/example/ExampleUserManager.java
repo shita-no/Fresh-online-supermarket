@@ -313,6 +313,7 @@ public class ExampleUserManager {
 			pst.setDate(2, new java.sql.Date(System.currentTimeMillis()+2592000000L));
 			pst.setString(3, BeanUser.currentLoginUser.getUserid());
 			BeanUser.currentLoginUser.setIsvip("ÊÇ");
+			BeanUser.currentLoginUser.setVipenddate(new java.sql.Date(System.currentTimeMillis()+2592000000L));
 			pst.execute();
 		
 			

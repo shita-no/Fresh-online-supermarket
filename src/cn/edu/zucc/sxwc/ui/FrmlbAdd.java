@@ -13,76 +13,75 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import cn.edu.zucc.sxwc.comtrol.example.ExampleEmployeeManager;
-
+import cn.edu.zucc.sxwc.comtrol.example.Lb;
+import cn.edu.zucc.sxwc.model.BeanLb;
 import cn.edu.zucc.sxwc.model.BeanManager;
 import cn.edu.zucc.sxwc.util.BaseException;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 
-public class FrmManager_AddManager extends JDialog implements ActionListener{
-	private BeanManager employee=null;
+public class FrmlbAdd extends JDialog implements ActionListener{
+	private BeanLb lb=null;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField edtUserid=new JTextField(50);
-	private JTextField edtUsername=new JTextField(50);
-	private JPasswordField edtPwd=new JPasswordField(50);
+	private JTextField textField=new JTextField(50);
+	private JTextField textField_1=new JTextField(50);
+	private JTextField textField_2=new JTextField(100);
 	private JButton okButton = new JButton("确定");
 	private JButton cancelButton = new JButton("取消");
 	private JPanel buttonPane = new JPanel();
-	
-	public FrmManager_AddManager(JDialog f, String s, boolean b) {
+	public FrmlbAdd(Frame f, String s, boolean b) {
 		super(f,s,b);
-		setTitle("\u6DFB\u52A0\u8D26\u53F7");
+		setTitle("添加商品类别");
 		setBounds(100, 100, 450, 300);
-		getContentPane().setLayout(new BorderLayout());
+		getContentPane().setLayout(null);
+		contentPanel.setBounds(0, 0, 432, 217);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("账号");
-		lblNewLabel.setBounds(46, 27, 72, 18);
+		JLabel lblNewLabel = new JLabel("类别编号");
+		lblNewLabel.setBounds(57, 31, 72, 18);
 		contentPanel.add(lblNewLabel);
 		
-		edtUserid = new JTextField();
-		edtUserid.setBounds(176, 24, 86, 24);
-		contentPanel.add(edtUserid);
-		edtUserid.setColumns(10);
-		
-		JLabel lblNewLabel_1 = new JLabel("姓名");
-		lblNewLabel_1.setBounds(46, 90, 72, 18);
+		JLabel lblNewLabel_1 = new JLabel("类别名称");
+		lblNewLabel_1.setBounds(57, 98, 72, 18);
 		contentPanel.add(lblNewLabel_1);
 		
-		edtUsername = new JTextField();
-		edtUsername.setBounds(176, 87, 86, 24);
-		contentPanel.add(edtUsername);
-		edtUsername.setColumns(10);
-		
-		JLabel lblNewLabel_2 = new JLabel("密码");
-		lblNewLabel_2.setBounds(46, 168, 72, 18);
+		JLabel lblNewLabel_2 = new JLabel("类别描述");
+		lblNewLabel_2.setBounds(57, 167, 72, 18);
 		contentPanel.add(lblNewLabel_2);
 		
-		edtPwd = new JPasswordField();
-		edtPwd.setBounds(176, 165, 86, 24);
+		textField = new JTextField();
+		textField.setBounds(188, 28, 86, 24);
+		contentPanel.add(textField);
+		textField.setColumns(10);
 		
+		textField_1 = new JTextField();
+		textField_1.setBounds(188, 95, 86, 24);
+		contentPanel.add(textField_1);
+		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(188, 164, 86, 24);
+		contentPanel.add(textField_2);
 		double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		this.setLocation((int) (width - this.getWidth()) / 2,
 				(int) (height - this.getHeight()) / 2);
-		contentPanel.add(edtPwd);
+		textField_2.setColumns(10);
 		{
 			
+			buttonPane.setBounds(0, 217, 432, 37);
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			getContentPane().add(buttonPane);
 			{
-				
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
@@ -90,8 +89,6 @@ public class FrmManager_AddManager extends JDialog implements ActionListener{
 		this.cancelButton.addActionListener(this);
 		this.okButton.addActionListener(this);
 	}
-
-	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -101,23 +98,23 @@ public class FrmManager_AddManager extends JDialog implements ActionListener{
 			return;
 		}
 		else if(e.getSource()==this.okButton){
-			String employeeid=this.edtUserid.getText();
-			String employeename=this.edtUsername.getText();
-			String employeepwd=new String(this.edtPwd.getPassword());
-			employee=new BeanManager();
-			employee.setEmployeeid(employeeid);
-			employee.setEmployeename(employeename);
-			employee.setPasswd(employeepwd);
+			String lbid=this.textField.getText();
+			String lbname=this.textField_1.getText();
+			String described=this.textField_2.getText();
+			lb=new BeanLb();
+			lb.setLbid(lbid);
+			lb.setLbname(lbname);
+			lb.setDescribed(described);
 			try {
-				(new ExampleEmployeeManager()).createManager(employee);
+				(new Lb()).createLb(lb);
 				this.setVisible(false);
 			} catch (BaseException e1) {
-				this.employee=null;
+				this.lb=null;
 				JOptionPane.showMessageDialog(null, e1.getMessage(),"错误",JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
-	public BeanManager getManager() {
-		return employee;
+	public BeanLb getLb() {
+		return lb;
 	}
 }

@@ -31,7 +31,7 @@ public class ShoppingCart {
 		try {
 			conn=DBUtil.getConnection();
 			
-			String sql="select a.goodsid,a.lbid,a.goodsname,a.price,a.amount,a.sumprice,b.discount,b.syamount "
+			String sql="select a.goodsid,a.lbid,a.goodsname,a.price,a.amount,a.sumprice,b.discount,b.syamount,b.enddate "
 					+ "from shoppingcart a,discountform b "
 					+ "where a.userid =? and a.goodsid=b.goodsid and a.lbid=b.lbid order by a.lbid,a.goodsid";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
@@ -44,7 +44,7 @@ public class ShoppingCart {
 				u.setGoodsname(rs.getString(3));
 				u.setPrice(rs.getFloat(4));
 				u.setAmount(rs.getInt(5));
-				if(rs.getInt(5)>=rs.getInt(8)) {
+				if(rs.getInt(5)>=rs.getInt(8)&&rs.getDate(9).after(new java.sql.Date(System.currentTimeMillis()))) {
 					u.setSumprice((float)(rs.getFloat(4)*rs.getInt(5)*rs.getFloat(7)*0.1));
 					String sql1="update shoppingcart set sumprice=? where userid=? and lbid=? and goodsid=?";
 					java.sql.PreparedStatement pst1=conn.prepareStatement(sql1);
@@ -120,7 +120,7 @@ public class ShoppingCart {
 		{
 			throw new BusinessException("购买数量大于库存，请重新加入购物车1");
 			
-		}
+}
 		//int flag=0;
 		BeanShoppingCart u=null;
 		Connection conn=null;
@@ -173,17 +173,9 @@ public class ShoppingCart {
 			
 			conn.commit();
 			JOptionPane.showMessageDialog(null, "加入购物车成功");
-			//flag=1;
+			
 			}
-			/*if(flag==1) {
-				String sql2="update goods set gamount=gamount-?  where goodsid =? and lbid=? ";
-				java.sql.PreparedStatement pst2= conn.prepareStatement(sql1);
-				pst1.setInt(1, beamount);
-				pst1.setString(2, goods.getGoodsid());
-				pst1.setString(3, goods.getLbid());
-				pst1.execute();
-				pst1.close();
-			}*/
+			
 		} catch(SQLException e) {
 			e.printStackTrace();
 			throw new DbException(e);
@@ -294,7 +286,7 @@ public class ShoppingCart {
 			
 			//生成订单号
 			int orderid = 0;
-			String sql = "select count(orderid) from goodsorder";
+			String sql = "select max(orderid) from goodsorder";
 			java.sql.PreparedStatement pst = conn.prepareStatement(sql);
 			java.sql.ResultSet rs = pst.executeQuery();
 			if(rs.next())

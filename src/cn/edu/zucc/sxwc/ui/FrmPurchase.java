@@ -30,7 +30,7 @@ public class FrmPurchase extends JDialog implements ActionListener{
 	
 	public FrmPurchase(JFrame f,String s,boolean b) {
 		super(f,s,b);
-		setTitle("已有商品");
+		setTitle("商品采购表");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 		contentPanel.setBounds(0, 0, 432, 217);

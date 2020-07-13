@@ -12,6 +12,7 @@ public class BeanGoodsorder {//商品订单表
 	private Date arrivetime;//要求送达时间
 	private String state;//订单状态（下单，配送，送达，退货）
 	public static final String[] GoodsorderTitles={"订单编号","配送地址编号","优惠券编号","原始金额","结算金额","要求送达时间","订单状态"};
+	public static final String[] GoodsorderTitles1={"订单编号","配送地址编号","优惠券编号","用户编号","原始金额","结算金额","要求送达时间","订单状态"};
 	public String getCell(int col){
 		if(col==0) return String.valueOf(orderid);
 		else if(col==1) return String.valueOf(addid);
@@ -20,6 +21,17 @@ public class BeanGoodsorder {//商品订单表
 		else if(col==4) return String.valueOf(endprice);	
 		else if(col==5) return String.valueOf(arrivetime);
 		else if(col==6) return String.valueOf(state);
+		else return "";
+	}
+	public String getCell1(int col){
+		if(col==0) return String.valueOf(orderid);
+		else if(col==1) return String.valueOf(addid);
+		else if(col==2) return String.valueOf(couponid);
+		else if(col==3) return String.valueOf(userid);
+		else if(col==4) return String.valueOf(beprice);
+		else if(col==5) return String.valueOf(endprice);	
+		else if(col==6) return String.valueOf(arrivetime);
+		else if(col==7) return String.valueOf(state);
 		else return "";
 	}
 	public int getOrderid() {

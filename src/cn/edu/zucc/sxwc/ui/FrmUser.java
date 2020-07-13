@@ -69,7 +69,7 @@ public class FrmUser extends JDialog implements ActionListener{
 	}
 	
 	private JButton btnNewButton = new JButton("成为会员");
-	private JButton btnNewButton_1 = new JButton("刷新界面");//不需要这个刷新了
+	//private JButton btnNewButton_1 = new JButton("刷新界面");
 	/**
 	 * Launch the application.
 	 */
@@ -105,9 +105,9 @@ public class FrmUser extends JDialog implements ActionListener{
 		this.btnNewButton.addActionListener(this);
 		
 		
-		btnNewButton_1.setBounds(41, 0, 113, 27);
-		contentPanel.add(btnNewButton_1);
-		this.btnNewButton_1.addActionListener(this);
+		//btnNewButton_1.setBounds(41, 0, 113, 27);
+		//contentPanel.add(btnNewButton_1);
+		//this.btnNewButton_1.addActionListener(this);
 		this.getContentPane().add(contentPanel,BorderLayout.SOUTH);
 		
 		this.addWindowListener(new WindowAdapter() {
@@ -134,5 +134,8 @@ public class FrmUser extends JDialog implements ActionListener{
 			}
 		
 		}
+		//else if(e.getSource() == this.btnNewButton_1) {
+			//this.reloadUserTable();
+		//}
 	}
 }

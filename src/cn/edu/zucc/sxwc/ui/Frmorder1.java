@@ -32,12 +32,12 @@ import cn.edu.zucc.sxwc.util.BaseException;
 import cn.edu.zucc.sxwc.util.DBUtil;
 import cn.edu.zucc.sxwc.util.DbException;
 
-public class Frmorder extends JDialog implements ActionListener{
+public class Frmorder1 extends JDialog implements ActionListener{
 
 	private final JPanel contentPanel = new JPanel();
-	private JButton btnNewButton = new JButton("确认收货");
-	private JButton btnNewButton_1 = new JButton("请求退货");
-	private Object tblTitle[]=BeanGoodsorder.GoodsorderTitles;
+	private JButton btnNewButton = new JButton("确认发货");
+	private JButton btnNewButton_1 = new JButton("同意退货");
+	private Object tblTitle[]=BeanGoodsorder.GoodsorderTitles1;
 	private Object tblgorderData[][];
 	DefaultTableModel tabgordermod=new DefaultTableModel();
 	private JTable gordertable=new JTable(tabgordermod);
@@ -53,16 +53,16 @@ public class Frmorder extends JDialog implements ActionListener{
 	private void reloadgorderTable(){
 		try {
 			Goodsorder gorder=new Goodsorder();
-			allgorder=gorder.loadGorder();
+			allgorder=gorder.loadGorder1();
 		} catch (BaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		tblgorderData =  new Object[allgorder.size()][BeanGoodsorder.GoodsorderTitles.length];
+		tblgorderData =  new Object[allgorder.size()][BeanGoodsorder.GoodsorderTitles1.length];
 		for(int i=0;i<allgorder.size();i++){
-			for(int j=0;j<BeanGoodsorder.GoodsorderTitles.length;j++)
+			for(int j=0;j<BeanGoodsorder.GoodsorderTitles1.length;j++)
 				{
-					tblgorderData[i][j]=allgorder.get(i).getCell(j);
+					tblgorderData[i][j]=allgorder.get(i).getCell1(j);
 				}
 			}
 			tabgordermod.setDataVector(tblgorderData,tblTitle);
@@ -91,9 +91,9 @@ public class Frmorder extends JDialog implements ActionListener{
 			this.ordertable.repaint();
 	}
 	
-	public Frmorder(Frame f, String s, boolean b) {
+	public Frmorder1(Frame f, String s, boolean b) {
 		super(f,s,b);
-		setTitle("我的订单");
+		setTitle("商品订单处理");
 		setBounds(100, 100, 790, 514);
 		getContentPane().setLayout(null);
 		contentPanel.setBounds(0, 0, 772, 375);
@@ -103,10 +103,10 @@ public class Frmorder extends JDialog implements ActionListener{
 		//getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
 		JScrollPane scrollPane1 = new JScrollPane(this.ordertable);
-		scrollPane1.setBounds(371, 0, 399, 297);
+		scrollPane1.setBounds(412, 0, 358, 297);
 		contentPanel.add(scrollPane1);
 		JScrollPane scrollPane = new JScrollPane(this.gordertable);
-		scrollPane.setBounds(0, 0, 371, 297);
+		scrollPane.setBounds(0, 0, 413, 297);
 		contentPanel.add(scrollPane);
 		btnNewButton_1.setBounds(407, 411, 113, 27);
 		getContentPane().add(btnNewButton_1);
@@ -115,11 +115,11 @@ public class Frmorder extends JDialog implements ActionListener{
 		this.gordertable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int i=Frmorder.this.gordertable.getSelectedRow();
+				int i=Frmorder1.this.gordertable.getSelectedRow();
 				if(i<0) {
 					return;
 				}
-				Frmorder.this.reloadorderTable(i);
+				Frmorder1.this.reloadorderTable(i);
 			}
 		});
 		this.btnNewButton.addActionListener(this);
@@ -142,9 +142,9 @@ public class Frmorder extends JDialog implements ActionListener{
 				return;
 			}
 			BeanGoodsorder gorder=this.allgorder.get(i);
-			if(JOptionPane.showConfirmDialog(this,"确定要收货吗？","确认",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+			if(JOptionPane.showConfirmDialog(this,"确定要发货吗？","确认",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
 				try {
-					(new Goodsorder()).update(gorder.getOrderid(), BeanUser.currentLoginUser.getUserid());
+					(new Goodsorder()).update1(gorder.getOrderid());
 					this.reloadgorderTable();
 				} catch (BaseException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage(),"错误",JOptionPane.ERROR_MESSAGE);
@@ -159,9 +159,9 @@ public class Frmorder extends JDialog implements ActionListener{
 				return;
 			}
 			BeanGoodsorder gorder=this.allgorder.get(i);
-			if(JOptionPane.showConfirmDialog(this,"确定要退货吗？","确认",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+			if(JOptionPane.showConfirmDialog(this,"确定要同意退货吗？","确认",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
 				try {
-					(new Goodsorder()).returngoods(gorder.getOrderid(), BeanUser.currentLoginUser.getUserid());
+					(new Goodsorder()).returngoods1(gorder.getOrderid());
 					this.reloadgorderTable();
 				} catch (BaseException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage(),"错误",JOptionPane.ERROR_MESSAGE);

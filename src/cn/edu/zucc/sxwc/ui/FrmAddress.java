@@ -35,7 +35,6 @@ public class FrmAddress extends JDialog implements ActionListener{
 	private JTable adTable=new JTable(tabaddModel);
 	List<BeanAddress> allad=null;
 	private JButton btnNewButton;
-	private JButton btnNewButton_1;
 	private JButton btnNewButton_2;
 	private void reloadcpTable(){
 		try {
@@ -74,15 +73,10 @@ public class FrmAddress extends JDialog implements ActionListener{
 		btnNewButton.setBounds(14, 201, 113, 27);
 		contentPanel.add(btnNewButton);
 		
-		btnNewButton_1 = new JButton("ÐÞ¸ÄµØÖ·");
-		btnNewButton_1.setBounds(180, 201, 113, 27);
-		contentPanel.add(btnNewButton_1);
-		
 		btnNewButton_2 = new JButton("É¾³ýµØÖ·");
 		btnNewButton_2.setBounds(358, 201, 113, 27);
 		contentPanel.add(btnNewButton_2);
 		this.btnNewButton.addActionListener(this);
-		this.btnNewButton_1.addActionListener(this);
 		this.btnNewButton_2.addActionListener(this);
 		this.addWindowListener(new WindowAdapter() {
 			@Override

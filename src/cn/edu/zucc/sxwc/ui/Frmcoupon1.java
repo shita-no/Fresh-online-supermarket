@@ -25,12 +25,12 @@ import cn.edu.zucc.sxwc.util.BaseException;
 public class Frmcoupon1 extends JDialog implements ActionListener{
 
 	private final JPanel contentPanel = new JPanel();
-	private Object tblcpTitle[]=BeanCoupon.CouponTitles;
+	private Object tblcpTitle[]=BeanCoupon.CouponTitles1;
 	private Object tblcpData[][];
 	DefaultTableModel tabcpModel=new DefaultTableModel();
 	private JTable cpTable=new JTable(tabcpModel);
 	List<BeanCoupon> allcp=null;
-	
+	private JButton button = new JButton("ÃÌº””≈ª›»Ø");
 	private void reloadcpTable(){
 		try {
 			Coupon cp=new Coupon();
@@ -39,10 +39,10 @@ public class Frmcoupon1 extends JDialog implements ActionListener{
 			JOptionPane.showMessageDialog(null, e.getMessage(), "¥ÌŒÛ",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		tblcpData =  new Object[allcp.size()][BeanCoupon.CouponTitles.length];
+		tblcpData =  new Object[allcp.size()][BeanCoupon.CouponTitles1.length];
 		for(int i=0;i<allcp.size();i++){
-			for(int j=0;j<BeanCoupon.CouponTitles.length;j++)
-				tblcpData[i][j]=allcp.get(i).getCell(j);
+			for(int j=0;j<BeanCoupon.CouponTitles1.length;j++)
+				tblcpData[i][j]=allcp.get(i).getCell1(j);
 		}
 		tabcpModel.setDataVector(tblcpData,tblcpTitle);
 		this.cpTable.validate();
@@ -62,27 +62,12 @@ public class Frmcoupon1 extends JDialog implements ActionListener{
 		this.getContentPane().add(scrollPane);
 		this.getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setBounds(0, 217, 559, 37);
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane);
-			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-		}
 		
-		JButton button = new JButton("\u6DFB\u52A0\u4F18\u60E0\u5238");
+		
+		
 		button.setBounds(0, 274, 113, 27);
 		getContentPane().add(button);
+		this.button.addActionListener(this);
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -97,6 +82,12 @@ public class Frmcoupon1 extends JDialog implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		if(e.getSource()==button) {
+			Frmcouponadd dlg=new Frmcouponadd(this, "ÃÌº””≈ª›»Ø", true);
+			dlg.setVisible(true);
+			if(dlg.getcoupon()!=null) {
+				this.reloadcpTable();
+			}
+		}
 	}
 }

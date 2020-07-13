@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class BeanCoupon {//优惠券
 	public static final String[] CouponTitles={"优惠券编号","内容","适用金额","减免金额","起始日期","结束日期"};
+	public static final String[] CouponTitles1={"优惠券编号","内容","适用金额","减免金额","起始日期","结束日期","用户编号"};
 	private String couponid;//优惠券编号
 	private String coucontent;//内容
 	private Float symoney;//适用金额
@@ -24,6 +25,16 @@ public class BeanCoupon {//优惠券
 		else if(col==3) return String.valueOf(jmmoney);
 		else if(col==4) return String.valueOf(bedate);	
 		else if(col==5) return String.valueOf(enddate);
+		else return "";
+	}
+	public String getCell1(int col){
+		if(col==0) return String.valueOf(couponid);
+		else if(col==1) return String.valueOf(coucontent);
+		else if(col==2) return String.valueOf(symoney);
+		else if(col==3) return String.valueOf(jmmoney);
+		else if(col==4) return String.valueOf(bedate);	
+		else if(col==5) return String.valueOf(enddate);
+		else if(col==6) return String.valueOf(userid);
 		else return "";
 	}
 	public String getCouponid() {

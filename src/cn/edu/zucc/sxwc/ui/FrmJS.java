@@ -240,32 +240,14 @@ public class FrmJS extends JDialog implements ActionListener{
 					couponid=str1;
 				}
 				
-					/*try {
-						couponid = Integer.parseInt(str1.replace(" ", ""));
-					} catch (NumberFormatException e1) {
-						e1.printStackTrace();
-					}/*
-				
-				
-				/*String str2 = "";//´ÙÏú
-				i = 0;
-				int moneyOffWay_order_id = 0;
-				if("---ÇëÑ¡Ôñ---".equals(this.moneyOffWay.getSelectedItem().toString()));
-				else {
-					while(String.valueOf(this.moneyOffWay.getSelectedItem()).charAt(i) != '.') {
-						str2 = str2 + String.valueOf(this.moneyOffWay.getSelectedItem()).charAt(i);
-						i++;
-					}
-					try {
-						moneyOffWay_order_id = Integer.parseInt(str2.replace(" ", ""));
-					} catch(NumberFormatException e1) {
-						e1.printStackTrace();
-					}
-				}	*/	
-				
 				ShoppingCart cart=new ShoppingCart();
 				cart.placeorder(addid,couponid);
 				this.setVisible(false);
+				//FrmUserMain a=new FrmUserMain();
+				//int lbid =
+				//a.reloadLbGoodsTabel(lbid);
+				//int lbid=FrmUserMain.this.lbtable.getSelectedRow();
+				//FrmUserMain.this.reloadLbGoodsTabel(lbid);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(),"´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;

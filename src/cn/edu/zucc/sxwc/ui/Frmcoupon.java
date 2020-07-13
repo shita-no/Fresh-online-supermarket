@@ -32,7 +32,7 @@ public class Frmcoupon extends JDialog implements ActionListener{
 	DefaultTableModel tabcpModel=new DefaultTableModel();
 	private JTable cpTable=new JTable(tabcpModel);
 	List<BeanCoupon> allcp=null;
-	
+	JButton btnNewButton = new JButton("¡Ï»°”≈ª›»Ø");
 	private void reloadcpTable(){
 		try {
 			Coupon cp=new Coupon();
@@ -64,29 +64,17 @@ public class Frmcoupon extends JDialog implements ActionListener{
 		this.getContentPane().add(scrollPane);
 		this.getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setBounds(0, 217, 517, 37);
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane);
-			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-		}
+		
+		btnNewButton.setBounds(27, 227, 113, 27);
+		getContentPane().add(btnNewButton);
+		
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				//System.exit(0);
 			}
 		});
+		this.btnNewButton.addActionListener(this);
 	}
 
 
@@ -95,7 +83,16 @@ public class Frmcoupon extends JDialog implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		if(e.getSource()==btnNewButton) {
+			try{
+				Coupon cp=new Coupon();
+				cp.getcoupon();
+				this.reloadcpTable();
+			}catch (BaseException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(),"¥ÌŒÛ",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+		}
 	}
-
 }

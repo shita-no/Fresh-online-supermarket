@@ -27,11 +27,13 @@ import cn.edu.zucc.sxwc.comtrol.example.ExampleUserManager;
 import cn.edu.zucc.sxwc.comtrol.example.Goods;
 import cn.edu.zucc.sxwc.comtrol.example.Lb;
 import cn.edu.zucc.sxwc.comtrol.example.Menu;
+import cn.edu.zucc.sxwc.comtrol.example.Pj;
 import cn.edu.zucc.sxwc.comtrol.example.ShoppingCart;
 import cn.edu.zucc.sxwc.model.BeanGoods;
 import cn.edu.zucc.sxwc.model.BeanLb;
 import cn.edu.zucc.sxwc.model.BeanManager;
 import cn.edu.zucc.sxwc.model.BeanMenu;
+import cn.edu.zucc.sxwc.model.BeanPj;
 import cn.edu.zucc.sxwc.model.BeanShoppingCart;
 import cn.edu.zucc.sxwc.model.BeanUser;
 import cn.edu.zucc.sxwc.util.BaseException;
@@ -56,14 +58,13 @@ public class FrmUserMain extends JFrame implements ActionListener{
 	private JMenu mnNewMenu_1 = new JMenu("优惠信息");
 	private JMenuItem mntmNewMenuItem_4 = new JMenuItem("优惠券");
 	private JMenuItem mntmNewMenuItem_5 = new JMenuItem("满折信息");
-	private final JMenu mnNewMenu_2 = new JMenu("生鲜信息");
-	private final JMenuItem mntmNewMenuItem_6 = new JMenuItem("生鲜类别信息");//选完一个类别后里面应该有商品信息
-	private final JMenuItem mntmNewMenuItem_7 = new JMenuItem("New menu item");
+	private final JMenu mnNewMenu_2 = new JMenu("更多");
+	private final JMenuItem mntmNewMenuItem_6 = new JMenuItem("刷新商品页面");//选完一个类别后里面应该有商品信息
 	//private FrmLogin1 dlgLogin=null;
 	private Object tblTitle[]=BeanLb.tableTitles;
 	private Object tbllbData[][];
 	DefaultTableModel tablbmod=new DefaultTableModel();
-	private JTable lbtable=new JTable(tablbmod);
+	public JTable lbtable=new JTable(tablbmod);
 	
 	private Object tblGoodsTitle[]=BeanGoods.GoodsTitles;
 	private Object tblGoodsData[][];
@@ -82,7 +83,8 @@ public class FrmUserMain extends JFrame implements ActionListener{
 	public  BeanGoods curgoods=null;
 	List<BeanMenu> goodsmenu=null;
 	private final JButton btnNewButton = new JButton("加入购物车");
-	private void reloadLbTable(){
+	private final JMenuItem mntmNewMenuItem_7 = new JMenuItem("商品评价表");
+	public void reloadLbTable(){
 		try {
 			Lb lb=new Lb();
 			alllb=lb.loadLb();
@@ -99,7 +101,7 @@ public class FrmUserMain extends JFrame implements ActionListener{
 			this.lbtable.validate();
 			this.lbtable.repaint();
 	}
-	private void reloadLbGoodsTabel(int lbid){
+	public void reloadLbGoodsTabel(int lbid){
 		if(lbid<0) return;
 		curlb=alllb.get(lbid);
 		try {
@@ -118,7 +120,7 @@ public class FrmUserMain extends JFrame implements ActionListener{
 		this.goodtable.validate();
 		this.goodtable.repaint();
 	}
-	private void reloadGoodsMenuTabel(int goodsid){
+	public void reloadGoodsMenuTabel(int goodsid){
 		if(goodsid<0) return;
 		curgoods=lbgoods.get(goodsid);
 		try {
@@ -206,6 +208,8 @@ public class FrmUserMain extends JFrame implements ActionListener{
 		mnNewMenu_2.add(mntmNewMenuItem_6);
 		
 		mnNewMenu_2.add(mntmNewMenuItem_7);
+		mntmNewMenuItem_6.addActionListener(this);
+		mntmNewMenuItem_7.addActionListener(this);
 		//setContentPane(contentPane);
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -240,6 +244,40 @@ public class FrmUserMain extends JFrame implements ActionListener{
 			Frmdiscount dlg=new Frmdiscount(this,"满折信息",true);
 			dlg.setVisible(true);
 		}
+		else if(e.getSource()==mntmNewMenuItem_6) {
+			//this.reloadLbTable();
+			int i=this.lbtable.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null,  "请先选择商品类别","提示",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			this.reloadLbGoodsTabel(i);
+			/*FrmUserMain.this.reloadLbGoodsTabel(i);
+			int i=this.lbtable.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null,  "请先选择商品类别","提示",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			FrmgoodsAdd dlg=new FrmgoodsAdd(this,"添加商品",true);
+			dlg.lbidString=tbllbData[i][0].toString();
+			dlg.setVisible(true);
+			if(dlg.getGoods()!=null){//刷新表格
+				this.reloadLbGoodsTabel(i);
+			}*/
+		}
+		else if(e.getSource()==mntmNewMenuItem_7) {
+			int i=this.goodtable.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null,  "请选择商品","提示",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			Frmpj dlg=new Frmpj(this,"商品评价",true,this.curgoods);
+//			dlg.pjgoods=this.curgoods;
+			//System.out.println(dlg.pjgoods.getLbid());
+			dlg.setVisible(true);
+			
+		}
 		else if(e.getSource()==btnNewButton) {
 			int i=this.goodtable.getSelectedRow();
 			if(i<0) {
@@ -249,8 +287,8 @@ public class FrmUserMain extends JFrame implements ActionListener{
 			Frmiscart dlg=new Frmiscart(this,"购物车",true);
 			dlg.setVisible(true);
 			int amount=dlg.loadNum();
-			if(amount==0) {
-				JOptionPane.showMessageDialog(null,  "购买数量不能为0，请重新加入购物车","提示",JOptionPane.ERROR_MESSAGE);
+			if(amount<=0) {
+				JOptionPane.showMessageDialog(null,  "购买数量不能为0或负数，请重新加入购物车","提示",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			ShoppingCart buygood=new ShoppingCart();
