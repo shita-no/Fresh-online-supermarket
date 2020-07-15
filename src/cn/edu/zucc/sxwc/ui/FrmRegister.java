@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -35,23 +36,9 @@ public class FrmRegister extends JDialog implements ActionListener{
 	private JTextField edtphonenum=new JTextField(50);
 	private JTextField edtmail=new JTextField(50);
 	private JTextField edtcity=new JTextField(50);
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			FrmRegister dialog = new FrmRegister();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
-	 */
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 	public FrmRegister() {
+		setTitle("\u6CE8\u518C");
 		this.setModal(true);
 		setBounds(100, 100, 556, 422);
 		getContentPane().setLayout(new BorderLayout());
@@ -95,10 +82,12 @@ public class FrmRegister extends JDialog implements ActionListener{
 		
 		
 		rdbtnNewRadioButton.setBounds(40, 107, 93, 27);
+		buttonGroup.add(rdbtnNewRadioButton);
 		contentPanel.add(rdbtnNewRadioButton);
 		
 		
 		rdbtnNewRadioButton_1.setBounds(188, 107, 93, 27);
+		buttonGroup.add(rdbtnNewRadioButton_1);
 		contentPanel.add(rdbtnNewRadioButton_1);
 		
 		JLabel lblNewLabel_4 = new JLabel("ÊÖ»úºÅÂë");

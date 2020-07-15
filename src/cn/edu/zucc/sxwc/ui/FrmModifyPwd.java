@@ -2,6 +2,7 @@ package cn.edu.zucc.sxwc.ui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,23 +29,9 @@ public class FrmModifyPwd extends JDialog implements ActionListener {
 	private JPasswordField passwordField_2;//ÐÂÃÜÂë2
 	private JButton okButton = new JButton("\u786E\u5B9A");
 	private JButton cancelButton = new JButton("\u53D6\u6D88");
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			FrmModifyPwd dialog = new FrmModifyPwd();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
-	/**
-	 * Create the dialog.
-	 */
-	public FrmModifyPwd() {
+	public FrmModifyPwd(JDialog f, String s, boolean b) {
+		super(f,s,b);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

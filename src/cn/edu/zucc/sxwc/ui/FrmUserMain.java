@@ -84,6 +84,7 @@ public class FrmUserMain extends JFrame implements ActionListener{
 	List<BeanMenu> goodsmenu=null;
 	private final JButton btnNewButton = new JButton("加入购物车");
 	private final JMenuItem mntmNewMenuItem_7 = new JMenuItem("商品评价表");
+	private final JMenuItem mntmNewMenuItem_8 = new JMenuItem("菜谱推荐表");
 	public void reloadLbTable(){
 		try {
 			Lb lb=new Lb();
@@ -208,6 +209,9 @@ public class FrmUserMain extends JFrame implements ActionListener{
 		mnNewMenu_2.add(mntmNewMenuItem_6);
 		
 		mnNewMenu_2.add(mntmNewMenuItem_7);
+		
+		mnNewMenu_2.add(mntmNewMenuItem_8);
+		mntmNewMenuItem_8.addActionListener(this);
 		mntmNewMenuItem_6.addActionListener(this);
 		mntmNewMenuItem_7.addActionListener(this);
 		//setContentPane(contentPane);
@@ -277,6 +281,10 @@ public class FrmUserMain extends JFrame implements ActionListener{
 			//System.out.println(dlg.pjgoods.getLbid());
 			dlg.setVisible(true);
 			
+		}
+		else if(e.getSource()==mntmNewMenuItem_8) {
+			Frmremenu dlg=new Frmremenu(this,"优惠券",true);
+			dlg.setVisible(true);
 		}
 		else if(e.getSource()==btnNewButton) {
 			int i=this.goodtable.getSelectedRow();

@@ -34,7 +34,7 @@ public class FrmMain extends JFrame implements ActionListener {
 	 */
 	private FrmLogin1 dlgLogin=null;
 	public FrmMain() {
-		dlgLogin=new FrmLogin1(this,"µÇÂ¼",true);
+		dlgLogin=new FrmLogin1(this,"µÇÂ¼ÉúÏÊÍø³¬",true);
 		dlgLogin.setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 597, 406);

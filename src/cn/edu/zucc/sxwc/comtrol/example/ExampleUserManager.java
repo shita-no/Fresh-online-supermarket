@@ -87,7 +87,7 @@ public class ExampleUserManager {
 					}
 					rs.close();
 					pst.close();
-					sql="insert into userinformation(userid,username,sex,passwd,phonenum,mail,city,regtime,isvip) value(?,?,?,?,?,?,?,Now(),?)";
+					sql="insert into userinformation(userid,username,sex,passwd,phonenum,mail,city,regtime,isvip,vipenddate) value(?,?,?,?,?,?,?,Now(),?,?)";
 					pst=conn.prepareStatement(sql);
 					pst.setString(1, userid);
 					pst.setString(2, username);
@@ -97,6 +97,7 @@ public class ExampleUserManager {
 					pst.setString(6, mail);
 					pst.setString(7, city);
 					pst.setString(8, "·ñ");
+					pst.setString(9, "");
 					BeanUser u=new BeanUser();
 					u.setUserid(userid);
 					u.setUsername(username);
@@ -153,7 +154,7 @@ public class ExampleUserManager {
 					}
 					rs.close();
 					pst.close();
-					sql="insert into userinformation(userid,username,sex,passwd,phonenum,mail,city,regtime,isvip) value(?,?,?,?,?,?,?,Now(),?)";
+					sql="insert into userinformation(userid,username,sex,passwd,phonenum,mail,city,regtime,isvip,vipenddate) value(?,?,?,?,?,?,?,Now(),?,?)";
 					pst=conn.prepareStatement(sql);
 					pst.setString(1, userid);
 					pst.setString(2, username);
@@ -163,6 +164,7 @@ public class ExampleUserManager {
 					pst.setString(6, mail);
 					pst.setString(7, city);
 					pst.setString(8, "·ñ");
+					pst.setDate(9, new Date(0));
 					BeanUser u=new BeanUser();
 					u.setUserid(userid);
 					u.setUsername(username);
@@ -198,7 +200,7 @@ public class ExampleUserManager {
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select passwd from userinformation where user_id=?";
+			String sql="select passwd from userinformation where userid=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.setString(1,BeanUser.currentLoginUser.getUserid());
 			java.sql.ResultSet rs=pst.executeQuery();
@@ -231,23 +233,52 @@ public class ExampleUserManager {
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select userid,username,sex,passwd,phonenum,mail,city,regtime,isvip,vipenddate from userinformation order by userid";
-			java.sql.Statement st=conn.createStatement();
-			java.sql.ResultSet rs=st.executeQuery(sql);
+			
+			
+			String sql="select userid,username,sex,passwd,phonenum,mail,city,regtime,isvip,vipenddate from userinformation where userid =? order by userid";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setString(1, BeanUser.currentLoginUser.getUserid());
+			java.sql.ResultSet rs=pst.executeQuery();
+			
 			while(rs.next()){
 				BeanUser u=new BeanUser();
-				u.setUserid(rs.getString(1));
-				u.setUsername(rs.getString(2));
-				u.setSex(rs.getString(3));
-				u.setPasswd(rs.getString(4));
-				u.setPhonenum(rs.getString(5));
-				u.setMail(rs.getString(6));
-				u.setCity(rs.getString(7));
-				u.setRegtime(rs.getDate(8));
-				u.setIsvip(rs.getString(9));
-				u.setVipenddate(rs.getDate(10));
+					
+					if(rs.getDate(10).before(new java.sql.Date(System.currentTimeMillis()))&&"ÊÇ".equals(rs.getString(9))) {
+					String sql1="update userinformation set isvip=? where userid=?";
+					java.sql.PreparedStatement pst1=conn.prepareStatement(sql1);
+					pst1.setString(1, "·ñ");
+					pst1.setString(2, BeanUser.currentLoginUser.getUserid());
+					pst1.execute();
+					pst1.close();
+					
+					u.setUserid(rs.getString(1));
+					u.setUsername(rs.getString(2));
+					u.setSex(rs.getString(3));
+					u.setPasswd(rs.getString(4));
+					u.setPhonenum(rs.getString(5));
+					u.setMail(rs.getString(6));
+					u.setCity(rs.getString(7));
+					u.setRegtime(rs.getDate(8));
+					u.setIsvip("·ñ");
+					u.setVipenddate(rs.getDate(10));
+				}
+					else {
+						u.setUserid(rs.getString(1));
+						u.setUsername(rs.getString(2));
+						u.setSex(rs.getString(3));
+						u.setPasswd(rs.getString(4));
+						u.setPhonenum(rs.getString(5));
+						u.setMail(rs.getString(6));
+						u.setCity(rs.getString(7));
+						u.setRegtime(rs.getDate(8));
+						u.setIsvip(rs.getString(9));
+						u.setVipenddate(rs.getDate(10));
+					}
+				
 				result.add(u);
+				
 			}
+			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DbException(e);
@@ -261,29 +292,56 @@ public class ExampleUserManager {
 					e.printStackTrace();
 				}
 		}
-		return result;
+	
 	}
 	public BeanUser loadUser1()throws BaseException{
 		BeanUser u=new BeanUser();
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select userid,username,sex,passwd,phonenum,mail,city,regtime,isvip,vipenddate from userinformation order by userid";
-			java.sql.Statement st=conn.createStatement();
-			java.sql.ResultSet rs=st.executeQuery(sql);
+			
+			
+			String sql="select userid,username,sex,passwd,phonenum,mail,city,regtime,isvip,vipenddate from userinformation where userid =? order by userid";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setString(1, BeanUser.currentLoginUser.getUserid());
+			java.sql.ResultSet rs=pst.executeQuery();
 			if(rs.next()){
+				//BeanUser u=new BeanUser();
+				if(rs.getDate(10).before(new java.sql.Date(System.currentTimeMillis()))&&"ÊÇ".equals(rs.getString(9))) {
+					String sql1="update userinformation set isvip=? where userid=?";
+					java.sql.PreparedStatement pst1=conn.prepareStatement(sql1);
+					pst1.setString(1, "·ñ");
+					pst1.setString(2, BeanUser.currentLoginUser.getUserid());
+					pst1.execute();
+					pst1.close();
+					
+					u.setUserid(rs.getString(1));
+					u.setUsername(rs.getString(2));
+					u.setSex(rs.getString(3));
+					u.setPasswd(rs.getString(4));
+					u.setPhonenum(rs.getString(5));
+					u.setMail(rs.getString(6));
+					u.setCity(rs.getString(7));
+					u.setRegtime(rs.getDate(8));
+					u.setIsvip("·ñ");
+					u.setVipenddate(rs.getDate(10));
+				}
+				else {
+					
+					u.setUserid(rs.getString(1));
+					u.setUsername(rs.getString(2));
+					u.setSex(rs.getString(3));
+					u.setPasswd(rs.getString(4));
+					u.setPhonenum(rs.getString(5));
+					u.setMail(rs.getString(6));
+					u.setCity(rs.getString(7));
+					u.setRegtime(rs.getDate(8));
+					u.setIsvip(rs.getString(9));
+					
+					u.setVipenddate(rs.getDate(10));
+				}
 				
-				u.setUserid(rs.getString(1));
-				u.setUsername(rs.getString(2));
-				u.setSex(rs.getString(3));
-				u.setPasswd(rs.getString(4));
-				u.setPhonenum(rs.getString(5));
-				u.setMail(rs.getString(6));
-				u.setCity(rs.getString(7));
-				u.setRegtime(rs.getDate(8));
-				u.setIsvip(rs.getString(9));
-				u.setVipenddate(rs.getDate(10));
-				
+				//result.add(u);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

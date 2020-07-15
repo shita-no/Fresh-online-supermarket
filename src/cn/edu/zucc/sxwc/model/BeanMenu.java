@@ -4,6 +4,13 @@ public class BeanMenu {
 	public static final String[] MenuTitles={"菜谱编号","商品编号","菜谱名称","菜谱用料","步骤","图片"};
 	private String menuid;
 	private String goodsid;
+	private String lbid;
+	public String getLbid() {
+		return lbid;
+	}
+	public void setLbid(String lbid) {
+		this.lbid = lbid;
+	}
 	private String menuname;
 	private String ingredients;//菜谱用料
 	private String Step;//步骤

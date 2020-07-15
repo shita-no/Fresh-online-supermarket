@@ -25,11 +25,13 @@ import cn.edu.zucc.sxwc.comtrol.example.ExampleEmployeeManager;
 import cn.edu.zucc.sxwc.comtrol.example.Goods;
 import cn.edu.zucc.sxwc.comtrol.example.Lb;
 import cn.edu.zucc.sxwc.comtrol.example.Menu;
+import cn.edu.zucc.sxwc.comtrol.example.Remenu;
 import cn.edu.zucc.sxwc.comtrol.example.ShoppingCart;
 import cn.edu.zucc.sxwc.model.BeanGoods;
 import cn.edu.zucc.sxwc.model.BeanLb;
 import cn.edu.zucc.sxwc.model.BeanManager;
 import cn.edu.zucc.sxwc.model.BeanMenu;
+import cn.edu.zucc.sxwc.model.BeanRemenu;
 import cn.edu.zucc.sxwc.model.BeanShoppingCart;
 import cn.edu.zucc.sxwc.model.BeanUser;
 import cn.edu.zucc.sxwc.util.BaseException;
@@ -74,9 +76,13 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 	List<BeanGoods> lbgoods=null;
 	public  BeanGoods curgoods=null;
 	List<BeanMenu> goodsmenu=null;
+	public  BeanMenu curmenu=null;
 	private final JMenu mnNewMenu_3 = new JMenu("商品管理");
 	private final JMenuItem mntmNewMenuItem_8 = new JMenuItem("添加商品");
 	private final JMenuItem mntmNewMenuItem_9 = new JMenuItem("添加已有商品数量");
+	private final JMenu mnNewMenu_4 = new JMenu("菜谱管理");
+	private final JMenuItem mntmNewMenuItem_2 = new JMenuItem("添加菜谱");
+	private final JMenuItem mntmNewMenuItem_3 = new JMenuItem("向用户推荐菜谱");
 	private void reloadLbTable(){
 		try {
 			Lb lb=new Lb();
@@ -169,6 +175,18 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 			}
 			
 	    });
+		this.menutable.addMouseListener(new MouseAdapter (){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int i=FrmManagerMain.this.menutable.getSelectedRow();
+				if(i<0) {
+					return;
+				}
+				curmenu=goodsmenu.get(i);
+			}
+			
+	    });
 		
 		
 		this.getContentPane().add(new JScrollPane(this.menutable), BorderLayout.EAST);
@@ -211,11 +229,19 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 		
 		mnNewMenu_2.add(mntmNewMenuItem_6);
 		mntmNewMenuItem_6.addActionListener(this);
+		mntmNewMenuItem_2.addActionListener(this);
+		mntmNewMenuItem_3.addActionListener(this);
 		menuBar.add(mnNewMenu_3);
 		
 		mnNewMenu_3.add(mntmNewMenuItem_8);
 		
 		mnNewMenu_3.add(mntmNewMenuItem_9);
+		
+		menuBar.add(mnNewMenu_4);
+		
+		mnNewMenu_4.add(mntmNewMenuItem_2);
+		
+		mnNewMenu_4.add(mntmNewMenuItem_3);
 		mntmNewMenuItem_8.addActionListener(this);
 		mntmNewMenuItem_9.addActionListener(this);
 		//setContentPane(contentPane);
@@ -234,7 +260,47 @@ public class FrmManagerMain extends JFrame implements ActionListener{
 			FrmManager dlg=new FrmManager(this,"管理员信息",true);
 			dlg.setVisible(true);
 		}
-		
+		else if(e.getSource()==this.mntmNewMenuItem_2) {
+			int i=this.goodtable.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null,  "请先选中商品","提示",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			FrmmenuAdd dlg=new FrmmenuAdd(this,"添加菜谱",true);
+			dlg.goodidString=tblGoodsData[i][0].toString();
+			dlg.lbid2=tblGoodsData[i][1].toString();
+			dlg.setVisible(true);
+			if(dlg.getmenu()!=null){//刷新表格
+				this.reloadGoodsMenuTabel(i);
+			}
+		}
+		else if(e.getSource()==this.mntmNewMenuItem_3) {
+			int i=this.menutable.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null,  "请先选中菜谱","提示",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			int j=this.goodtable.getSelectedRow();
+			if(j<0) {
+				JOptionPane.showMessageDialog(null,  "请先选中商品","提示",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			Frmms dlg=new Frmms(this,"添加推荐语",true);
+			dlg.setVisible(true);
+			String ms=dlg.description;
+			//this.curmenu.getLbid()
+			Remenu remenu=new Remenu();
+			try {
+				remenu.addmenu(this.curmenu,ms,tblGoodsData[j][1].toString());
+			} catch (BaseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null,  e1.getMessage(),"提示",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
 		else if(e.getSource()==mntmNewMenuItem_4) {
 			Frmcoupon1 dlg=new Frmcoupon1(this,"优惠券",true);
 			dlg.setVisible(true);

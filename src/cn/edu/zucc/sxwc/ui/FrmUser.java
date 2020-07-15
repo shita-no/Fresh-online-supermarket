@@ -23,8 +23,10 @@ import org.hibernate.boot.model.relational.InitCommand;
 import cn.edu.zucc.sxwc.comtrol.example.ExampleUserManager;
 import cn.edu.zucc.sxwc.comtrol.example.Goods;
 import cn.edu.zucc.sxwc.comtrol.example.Lb;
+import cn.edu.zucc.sxwc.comtrol.example.Remenu;
 import cn.edu.zucc.sxwc.model.BeanGoods;
 import cn.edu.zucc.sxwc.model.BeanLb;
+import cn.edu.zucc.sxwc.model.BeanRemenu;
 import cn.edu.zucc.sxwc.model.BeanUser;
 import cn.edu.zucc.sxwc.util.BaseException;
 
@@ -35,27 +37,27 @@ public class FrmUser extends JDialog implements ActionListener{
 	private Object tbluserData[][];
 	DefaultTableModel tabusermod=new DefaultTableModel();
 	private JTable usertable=new JTable(tabusermod);
-	//List<BeanUser> alluser=null;
+	List<BeanUser> alluser=null;
 	private BeanUser nowuser=null;
 	private void reloadUserTable(){
-		/*try {
+		try {
 			ExampleUserManager user=new ExampleUserManager();
 			alluser=user.loadUser();
-			nowuser=BeanUser.currentLoginUser;
 		} catch (BaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 			return;
-		}*/
-		/*try{
-			
-			ExampleUserManager user=new ExampleUserManager();
+		}
+		tbluserData =  new Object[alluser.size()][BeanUser.tableTitles.length];
+		for(int i=0;i<alluser.size();i++){
+			for(int j=0;j<BeanUser.tableTitles.length;j++)
+				tbluserData[i][j]=alluser.get(i).getCell(j);
+		}
+		tabusermod.setDataVector(tbluserData,tblTitle);
+		this.usertable.validate();
+		this.usertable.repaint();
+	}
+	/*private void reloadUserTable(){
 		
-		BeanUser.currentLoginUser=user.loadUser1();
-		nowuser=BeanUser.currentLoginUser;
-		}catch (BaseException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
-			return;
-		}*/
 		nowuser=BeanUser.currentLoginUser;
 		tbluserData =  new String[1][BeanUser.tableTitles.length];
 		
@@ -66,26 +68,11 @@ public class FrmUser extends JDialog implements ActionListener{
 			tabusermod.setDataVector(tbluserData,tblTitle);
 			this.usertable.validate();
 			this.usertable.repaint();
-	}
+	}*/
 	
 	private JButton btnNewButton = new JButton("成为会员");
-	//private JButton btnNewButton_1 = new JButton("刷新界面");
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		try {
-			FrmUser dialog = new FrmUser();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
-
-	/**
-	 * Create the dialog.
-	 */
+	private final JButton btnNewButton_1 = new JButton("修改密码");
+	
 	public FrmUser(Frame f, String s, boolean b) {
 		super(f,s,b);
 		setTitle("用户信息");
@@ -107,8 +94,10 @@ public class FrmUser extends JDialog implements ActionListener{
 		
 		//btnNewButton_1.setBounds(41, 0, 113, 27);
 		//contentPanel.add(btnNewButton_1);
-		//this.btnNewButton_1.addActionListener(this);
+		this.btnNewButton_1.addActionListener(this);
 		this.getContentPane().add(contentPanel,BorderLayout.SOUTH);
+		
+		contentPanel.add(btnNewButton_1);
 		
 		this.addWindowListener(new WindowAdapter() {
 			@Override
@@ -134,8 +123,12 @@ public class FrmUser extends JDialog implements ActionListener{
 			}
 		
 		}
-		//else if(e.getSource() == this.btnNewButton_1) {
-			//this.reloadUserTable();
-		//}
+		else if(e.getSource() == this.btnNewButton_1) {
+			FrmModifyPwd dlg=new FrmModifyPwd(this,"密码修改",true);
+			dlg.setVisible(true);
+			
+			this.reloadUserTable();
+			
+		}
 	}
 }

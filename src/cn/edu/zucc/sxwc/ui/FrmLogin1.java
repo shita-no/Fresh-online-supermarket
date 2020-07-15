@@ -39,6 +39,7 @@ public class FrmLogin1 extends JDialog implements ActionListener{
 	
 	public FrmLogin1(Frame f, String s, boolean b) {
 		super(f, s, b);
+		setTitle("\u767B\u5F55\u751F\u9C9C\u7F51\u8D85");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
